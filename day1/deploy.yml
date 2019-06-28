@@ -1,0 +1,57 @@
+---
+- hosts: test_remote
+  gather_facts: no
+    
+  tasks:
+  - name: get src file list
+    script: scripts/get_src_list.py
+    register: src_list
+    delegate_to: localhost
+    
+  - name: get dest file list
+    script: scripts/get_dest_list.py
+    register: dest_list
+    delegate_to: localhost
+    
+  #- name: with together debug
+  #  debug: 
+  #    msg: "{{ item.0 }} - {{ item.1 }}"
+  #  when: "item.0 != '' or item.1 != ''"
+  #  with_together:
+  #    - "{{ src_list.stdout_lines }}"
+  #    - "{{ dest_list.stdout_lines }}"
+
+  - name: Ansible copy file to remote server
+    copy:
+      src: "{{ item.0 }}"
+      dest: "{{ item.1 }}"
+      force: yes
+    when: "item.0 != '' or item.1 != ''"
+    with_together:
+      - "{{ src_list.stdout_lines }}"
+      - "{{ dest_list.stdout_lines }}"
+
+
+  #- name: get input to regester
+  #  shell: cat input.txt 
+  #  register: input_txt
+  #  delegate_to: localhost
+  #  
+  #- name: get cmd part
+  #  set_fact:
+  #    cmd_part: "{{ input_txt.stdout | regex_search('cmd_list(?s)(.*)cmd_list_end')}}"
+  #  
+  #- name: make cmd list
+  #  set_fact: cmd_list="{{cmd_part.split('\n')}}"
+    
+#  - name:
+#    debug:
+#      msg: "{{ item }}"
+#    when: " item | regex_search('cmd_list')!='cmd_list' "
+#    loop: "{{cmd_list}}"
+
+  #- name:
+  #  shell: "{{item}}"
+  #  when: " item | regex_search('cmd_list')!='cmd_list' "
+  #  loop: "{{cmd_list}}"
+...

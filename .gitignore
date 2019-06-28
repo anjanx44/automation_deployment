@@ -1,0 +1,8 @@
+# Ignore all playbook retry file
+*.retry
+
+# Ignore all host config file
+hosts
+
+# Ignore auto-generated log file
+netact_update.log

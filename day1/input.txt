@@ -1,0 +1,6 @@
+src_root:/home/anjanx44/prodect_dir/
+dest_root:/var/www/html/destination_project_dir/
+pest all file path. do not include new line. new line can submit full project to the server
+-----------cmd_list------------
+cd /data/tmp
+-----------cmd_list_end-------
